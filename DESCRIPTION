@@ -1,0 +1,13 @@
+Package: europarl
+Type: Package
+Title:  Scrap data from europarlament's website
+Version: 0.1.0
+Author: First version - Szymon Gorka
+Maintainer: The package maintainer <yourself@somewhere.net>
+Description: Scrap data from europarlament's website
+License: GPL
+Encoding: UTF-8
+LazyData: true
+Imports: rvest,
+    magrittr
+RoxygenNote: 6.0.1
