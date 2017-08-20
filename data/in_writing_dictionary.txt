@@ -1,0 +1,25 @@
+lang;name
+BG;в писмена форма
+CS;písemně
+DA;skriftlig
+DE;schriftlich
+EL;γραπτώς
+EN;in writing
+ES;por escrito
+ET;kirjalikult
+FI;kirjallinen 
+FR;par écrit
+GA;i scríbhinn
+HR;napisan
+HU;írásban
+IT;per iscritto
+LT;raštu
+LV;rakstiski
+MT;bil-miktub
+NL;schriftelijk
+PL;na piśmie
+PT;por escrito
+RO;în scris
+SK;písomne 
+SL;pisno
+SV;skriftlig

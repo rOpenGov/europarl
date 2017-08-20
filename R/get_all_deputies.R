@@ -3,6 +3,7 @@
 #' @export
 #' @import rvest
 #' @import magrittr
+#' @import RSelenium
 get_all_deputies <- function() {
   # repeat: get current term of office and create data_frame with deputies names
   i <- 1
@@ -23,17 +24,27 @@ get_all_deputies <- function() {
       return(list_deputies)
 
     deputies <- page %>%
-      html_nodes(".mep_name") %>%
-      html_text()
-    deputies <- as.data.frame(deputies)
+      html_nodes(".mep_name")
+    #links
+    href <- deputies %>%  html_nodes(xpath = "./a") %>%
+      html_attr("href")
+
+    deputies <- as.data.frame(deputies %>% html_text())
+
     deputies[] <- lapply(deputies, as.character)
     deputies$i <- 1
-    colnames(deputies)[2] <- paste("P", i, sep ="")
-    list_deputies[[i]] <- deputies
+    deputies$links <- href
+
+    colnames(deputies) <- c("name",paste("P", i, sep =""), "link")
+
+    deputies$ID_deputy <- sapply(deputies$link, function(x)
+      sub("/.*", "",sub(".*/en/", "", x)) #extarct id from url
+    )
+    #assign deputies to deputies_parlamentary..
+    assign(paste("deputies_P", i, sep= "" ),deputies)
+    list_deputies[i] <- list(assign(paste("deputies_P", i, sep= "" ),deputies))
     i <- i + 1
   })
-  # give current term of office
-  list_deputies
 }
 
 
