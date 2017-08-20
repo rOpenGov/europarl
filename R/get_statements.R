@@ -1,4 +1,5 @@
 
+#only for P8 
 
 get_statements <- function(deputy_id, browser) {
 
