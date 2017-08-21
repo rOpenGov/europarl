@@ -1,5 +1,9 @@
-
-#only for P8 
+#' Get all statements for P8
+#'
+#' @export
+#' @import rvest
+#' @import magrittr
+#' @import RSelenium
 
 get_statements <- function(deputy_id, browser) {
 
