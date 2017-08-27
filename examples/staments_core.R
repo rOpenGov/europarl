@@ -5,7 +5,12 @@ library(data.table)
 
 
 webdriver <- rsDriver(port = 4445L, browser="firefox")
-browser <- webdriver$client 
+browser <- webdriver$client
+
+deputies <-  get_all_deputies()
+for (i in seq(deputies))
+  assign(paste("df", i, sep = ""), deputies[[i]])
+
 
 start <- Sys.time()
 a <- lapply(deputies_P8[,c("ID_deputy")],

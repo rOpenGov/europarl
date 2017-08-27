@@ -28,6 +28,9 @@ get_all_deputies <- function() {
     #links
     href <- deputies %>%  html_nodes(xpath = "./a") %>%
       html_attr("href")
+    href <- sapply(href, function(x) {
+      x <- paste("http://www.europarl.europa.eu",x,sep="")
+    })
 
     deputies <- as.data.frame(deputies %>% html_text())
 
@@ -46,7 +49,5 @@ get_all_deputies <- function() {
     i <- i + 1
   })
 }
-
-
 
 
