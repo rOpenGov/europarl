@@ -33,6 +33,12 @@ get_history <- function(home_page, deputy_id) {
   titles <- xpathSApply(hh, "//h4", xmlValue)
   info <- xpathApply(hh, "//ul", function(x)
     gsub("[\r\t\n]","",xpathSApply(x,"./li/text()", xmlValue)))
+  info <- lapply(info,function(x){
+    if(!length(x)) {
+      x <- NA
+    }
+    x
+  })
   #merge results together
   table <- do.call(rbind, Map(cbind, titles, info))
   content <- as.data.frame(trimws(table))
