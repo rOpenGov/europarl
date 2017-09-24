@@ -1,5 +1,6 @@
 # europarl
-Tools for European Parliament Data
+
+Tools for scraping and processing data from European Parliament
 
 Install with 
 ```
