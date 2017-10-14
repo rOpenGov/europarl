@@ -5,6 +5,7 @@
 #' @import magrittr
 #' @import XML
 
+#temporary changes
 
 
 get_history <- function(home_page, deputy_id) {
@@ -25,11 +26,9 @@ get_history <- function(home_page, deputy_id) {
   history_url <- info[i]
   page <- read_html(paste(eu_meps_url, deputy_id, history_url,sep="/"))
 
-
-
   sections <- html_nodes(page, xpath = '//div[(@class = "boxcontent nobackground")]')
-  hh <- htmlParse(sections, asText=T)
 
+  hh <- htmlParse(sections, asText = TRUE, encoding="UTF-8")
   titles <- xpathSApply(hh, "//h4", xmlValue)
   info <- xpathApply(hh, "//ul", function(x)
     gsub("[\r\t\n]","",xpathSApply(x,"./li/text()", xmlValue)))

@@ -86,6 +86,5 @@ a <- lapply(deputies_P8[,c("ID_deputy")],
               get_statements(x, browser)
             })
 statements_P8 <- rbindlist(a)
-save(statements_P8, deputies_P8, file="deputies_statements.rda")
+save(statements_P8, deputies_P8, file="deputies_statements_P8.rda")
 
-data <- subset(statements_P8, lang == "el", select=c("title","text","date"))
