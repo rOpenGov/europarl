@@ -23,4 +23,4 @@ print(Sys.time()-start)
 statements_P8 <- rbindlist(a)
 save(statements_P8, deputies_P8, file="deputies_statements.rda")
 
-data <- subset(statements_P8, lang == "el", select=c("title","text","date"))
+
