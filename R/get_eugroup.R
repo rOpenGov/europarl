@@ -17,9 +17,14 @@ get_eurogroup <- function(deputy_id, date = Sys.Date()) {
                                   ifelse(is.na(eu_party_P8$date_end),TRUE, eu_party_P8$date_end >= date) &
                                   eu_party_P8$ID_deputy==deputy_id
                                   ),c("name")]
-
-    return(eu_group)
+    if(length(eu_group) > 1) {
+      warning("More than one possibility. Error in data set. Returns first possibility.")
+      return(eu_group[1])
+    }
+    else {
+      return(eu_group)
+    }
+    #statements_table$eugroup  <- gsub("-.*","",statements_table$eugroup)
 
 }
-
 
