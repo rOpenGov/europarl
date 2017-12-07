@@ -25,14 +25,16 @@ get_statements <- function(deputy_id, browser) {
   # check if there is buuton
   button <- browser$findElements(using="class", value="blue_button")
 
-  if (length(button) > 0) {
-    # change function -> click button
-    button <- browser$findElement(using="class", value="blue_button")
-    #button$highlightElement()
+  button <- browser$findElement(value="//a[@class='blue_button']")
+  while(button$isElementDisplayed()==TRUE) {
+    button <- browser$findElement(value="//a[@class='blue_button']")
+    button$highlightElement()
+
     button$clickElement()
     Sys.sleep(5)
-    cat("button \n")
+    cat("button\n")
   }
+
   #get information:
   titles <- browser$findElements(value="//p")
   titles <- sapply(titles, function(x){x$getElementText()})

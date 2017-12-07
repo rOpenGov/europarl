@@ -4,8 +4,10 @@ library(XML)
 library(data.table)
 
 
+
 webdriver <- rsDriver(port = 4445L, browser="firefox")
 browser <- webdriver$client
+
 
 deputies <-  get_all_deputies()
 for (i in seq(deputies))
