@@ -66,7 +66,7 @@ get_statements <- function(deputy_id, browser) {
     tf <-  sapply(statements$title, function(x) grepl("debate",x))
     statements$is_debate <-  tf
 
-    statements_details <- lapply(statements$link[36], function(x) {
+    statements_details <- lapply(statements$link, function(x) {
       page <- read_html(x)
       lan_on <- page %>%
         html_nodes(".selected") %>%
@@ -83,7 +83,7 @@ get_statements <- function(deputy_id, browser) {
 
 
       values <- data.frame(lan_on,text, time)
-      return(values)
+      +return(values)
       }
     )
 
