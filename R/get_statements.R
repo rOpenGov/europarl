@@ -11,36 +11,42 @@ get_statements <- function(deputy_id, browser) {
   cat("deputy id:", deputy_id,"\n")
   eu_url <- "http://www.europarl.europa.eu"
   eu_meps_url <- "http://www.europarl.europa.eu/meps/en"
+  Sys.getlocale("LC_TIME")
+  Sys.setlocale("LC_TIME", "C")
+
 
   type <- "CRE"
   url <- paste(eu_meps_url,deputy_id,"seeall.html?type=",sep="/")
   statements_url <- paste(url,type, sep="")
 
-  Sys.getlocale("LC_TIME")
-  Sys.setlocale("LC_TIME", "C")
   #======================
   browser <- browser
   browser$navigate(statements_url)
 
   # check if there is buuton
-  button <- browser$findElements(using="class", value="blue_button")
-
-  button <- browser$findElement(value="//a[@class='blue_button']")
-  while(button$isElementDisplayed()==TRUE) {
+  button <- FALSE
+  tryCatch(button <-  browser$findElement(value="//a[@class='blue_button']"),
+                error=function(e){
+                  cat('No button "see more" \n')
+                  })
+   if(class(button)[1] == 'webElement') {
     button <- browser$findElement(value="//a[@class='blue_button']")
-    button$highlightElement()
+    while(button$isElementDisplayed()==TRUE) {
+      button <- browser$findElement(value="//a[@class='blue_button']")
+      button$highlightElement()
 
-    button$clickElement()
-    Sys.sleep(5)
-    cat("button\n")
+      button$clickElement()
+      Sys.sleep(5)
+      cat("button\n")
+    }
   }
 
   #get information:
-  titles <- browser$findElements(value="//p")
+  titles <- browser$findElements(value='//p[@class="title"]')
   titles <- sapply(titles, function(x){x$getElementText()})
   cat("titles: ", length(titles),"\n")
   if(length(titles) > 0){
-    links <- browser$findElements(value="//p//a")
+    links <- browser$findElements(value='//p[@class="title"]//a')
     links <- sapply(links, function(x){x$getElementAttribute("href")})
     cat("links: ", length(links),"\n")
     reference <- browser$findElements(using="class", value = "reference")
@@ -60,34 +66,34 @@ get_statements <- function(deputy_id, browser) {
     tf <-  sapply(statements$title, function(x) grepl("debate",x))
     statements$is_debate <-  tf
 
-    data <- sapply(statements$link, function(x) {
+    statements_details <- lapply(statements$link[36], function(x) {
       page <- read_html(x)
       lan_on <- page %>%
         html_nodes(".selected") %>%
         html_text()
       lan_on <-  substr(lan_on,1,2)
-      return(lan_on)
-      }
-      )
-
-    text <- sapply(statements$link, function(x) {
-
-      url <- unlist(x)
-      page <- read_html(url)
 
       text <- page %>%
         html_nodes(xpath='//p[@class="contents"]') %>%
         html_text()
-      text
-      paste(text,collapse="\n")
-    })
+      text <- as.character(paste(text,collapse="\n"))
+      time <- time_of_statements(x)
 
-    statements$text <- text
+      time <- as.data.frame(time)
 
-    statements$lang <- data
+
+      values <- data.frame(lan_on,text, time)
+      return(values)
+      }
+    )
+
+    statements_details <-  do.call('rbind', statements_details)
+
+    statements <- cbind(statements, statements_details)
+
     statements$id_deputy <- deputy_id
 
-    rownames(statements) <- seq(1:length(statements$lang))
+    rownames(statements) <- seq(1:length(statements$id_deputy))
     return(statements)
   }
 

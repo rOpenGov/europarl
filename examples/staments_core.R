@@ -1,23 +1,30 @@
 library(rvest)
 library(RSelenium)
 library(XML)
-library(data.table)
-
-
+library(lubridate)
 
 webdriver <- rsDriver(port = 4445L, browser="firefox")
 browser <- webdriver$client
 
 
+deputy_id <- '28307'
+get_statements(deputy_id, browser)
+
 deputies <-  get_all_deputies()
-for (i in seq(deputies))
+for (i in seq(deputies)) {
   assign(paste("df", i, sep = ""), deputies[[i]])
+}
+
 
 
 start <- Sys.time()
-a <- lapply(deputies_P8[,c("ID_deputy")],
+i <- 1
+a <- lapply(deputies_P8[1:100,c("ID_deputy")],
             function(x) {
-              get_statements(x, browser)
+              cat('n: ',i,'\n')
+              i <<-  i + 1
+              return(get_statements(x, browser))
+
             })
 print(Sys.time()-start)
 

@@ -4,3 +4,4 @@
 .Ruserdata
 r_check button.R
 errors.R
+profiler/
