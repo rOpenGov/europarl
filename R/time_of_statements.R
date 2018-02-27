@@ -56,7 +56,7 @@ time_of_statements <- function(url) {
           return(values)
         }, {
           cat('ok')
-          return(list(duration = 'error', startTime = 'error', endTime = 'error'))
+          return(list(duration = NA, startTime = NA, endTime = NA))
         })
       }
     }

@@ -33,10 +33,9 @@ get_statements <- function(deputy_id, browser) {
     button <- browser$findElement(value="//a[@class='blue_button']")
     while(button$isElementDisplayed()==TRUE) {
       button <- browser$findElement(value="//a[@class='blue_button']")
-      button$highlightElement()
 
       button$clickElement()
-      Sys.sleep(5)
+      Sys.sleep(7)
       cat("button\n")
     }
   }
@@ -58,16 +57,22 @@ get_statements <- function(deputy_id, browser) {
     date <- gsub(".*:\n","",date) %>% as.Date("%d-%m-%Y")
     cat("date: ", length(date),"\n")
 
+
+
     statements <- as.data.frame(date)
     statements$title <- unlist(titles)
     statements$reference <- unlist(reference)
     statements$link <- unlist(links)
 
     tf <-  sapply(statements$title, function(x) grepl("debate",x))
+
     statements$is_debate <-  tf
+    count <- 1
+
 
     statements_details <- lapply(statements$link, function(x) {
       page <- read_html(x)
+      cat(deputy_id,' statement:',count, ',url:',x,'\n')
       lan_on <- page %>%
         html_nodes(".selected") %>%
         html_text()
@@ -77,13 +82,13 @@ get_statements <- function(deputy_id, browser) {
         html_nodes(xpath='//p[@class="contents"]') %>%
         html_text()
       text <- as.character(paste(text,collapse="\n"))
-      time <- time_of_statements(x)
 
+      time <- time_of_statements(x)
       time <- as.data.frame(time)
 
-
+      count <<- count + 1
       values <- data.frame(lan_on,text, time)
-      +return(values)
+      return(values)
       }
     )
 
