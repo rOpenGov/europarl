@@ -1,78 +1,84 @@
 directory <- './data/partial_results/'
 
-deputies_P6 <- deputies[[6]] %>%
-  mutate(row_n = rownames(deputies[[6]])) %>%
-  select(name, id, row_n)
+for( k in 6:7) {
+  deputies_P <- deputies[[k]] %>%
+    mutate(row_n = rownames(deputies[[k]])) %>%
+    select(name, id, row_n)
 
-tmp <- read.delim(paste0(directory,'/6/',"6_1.txt"), sep="|", stringsAsFactors = FALSE)
-
-
-statements_P6 <- tmp
-
-statements_P6$text <- gsub('_eol','\n', statements_P6$text)
-nazwy <- colnames(statements_P6)
+  tmp <- read.delim(paste0(directory,'/',k,'/',k,"_1.txt"), sep="|", stringsAsFactors = FALSE)
 
 
-data <- statements_P6
+  statements_P <- tmp
+
+  statements_P$text <- gsub('_eol','\n', statements_P$text)
+  nazwy <- colnames(statements_P)
 
 
-data$duration <- time_length(data$duration)
+  data <- statements_P
 
-data_db <- data.frame(
-  deputies_id = data$deputy_id,
-  date = data$date,
-  title = data$title,
-  reference = data$reference,
-  language_code = data$lang_selected,
-  text = data$text,
-  duration = data$duration,
-  start_time = data$startTime,
-  end_time = data$endTime,
-  link = data$link,
-  term = 6
-)
-dbWriteTable(db, 'statements', data_db,
-             append = TRUE , row.names = FALSE)
+  data$duration <- time_length(data$duration)
 
-# dbGetQuery(db, "SELECT text from statements
-#            WHERE id = 1")
+  data_db <- data.frame(
+    deputies_id = data$deputy_id,
+    date = data$date,
+    title = data$title,
+    reference = data$reference,
+    language_code = data$lang_selected,
+    text = data$text,
+    duration = data$duration,
+    start_time = data$startTime,
+    end_time = data$endTime,
+    link = data$link,
+    term = k
+  )
+  dbWriteTable(db, 'statements', data_db,
+               append = TRUE , row.names = FALSE)
 
-for(i in seq_along(deputies_P6$id)) {
-  i <- i + 1
-  cat(i, '\n')
-  if(i == length(deputies_P8$id)) {
-    break()
+  # dbGetQuery(db, "SELECT text from statements
+  #            WHERE id = 1")
+
+  for(i in seq_along(deputies_P$id)) {
+    i <- i + 685
+    cat(i, '\n')
+    if(i == length(deputies_P$id)) {
+      break()
+    }
+
+    if(k == 7 & i >= 513) {
+      data <- read.delim(paste0(directory,'/',k,'/',k,"_", i,".csv"), sep="|", stringsAsFactors = FALSE)
+    } else {
+      data <-  read.delim(paste0(directory,'/',k,'/',k,"_", i,".txt"), sep="|", stringsAsFactors = FALSE)
+    }
+
+
+
+    data$text <- gsub('_eol','\n', data$text)
+    cat(i,' ',deputies_P$name[i] , 'id:',deputies_P$id[i], '\n')
+    #statements_P8_pl <- rbind(statements_P8_pl, data)
+
+    if(nrow(data) != 0) {
+
+      data$date <- as_date(data$date)
+      data$duration <- time_length(data$duration)
+
+      data_db <- data.frame(
+        deputies_id = data$deputy_id,
+        date = data$date,
+        title = data$title,
+        reference = data$reference,
+        language_code = data$lang_selected,
+        text = data$text,
+        duration = data$duration,
+        start_time = data$startTime,
+        end_time = data$endTime,
+        link = data$link,
+        term = k
+      )
+
+
+      dbWriteTable(db, 'statements', data_db,
+                   append=TRUE , row.names = FALSE)
+    }
   }
 
-
-  data <-  read.delim(paste0(directory,'/6/',"6_", i,".txt"), sep="|", stringsAsFactors = FALSE)
-
-
-  data$text <- gsub('_eol','\n', data$text)
-  cat(i,' ',deputies_P6$name[i] , 'id:',deputies_P6$id[i], '\n')
-  #statements_P8_pl <- rbind(statements_P8_pl, data)
-
-  if(nrow(data) != 0) {
-
-    data$duration <- time_length(data$duration)
-
-    data_db <- data.frame(
-      deputies_id = data$deputy_id,
-      date = data$date,
-      title = data$title,
-      reference = data$reference,
-      language_code = data$lang_selected,
-      text = data$text,
-      duration = data$duration,
-      start_time = data$date,
-      end_time = data$date,
-      link = data$link,
-      term = 6
-    )
-
-
-    dbWriteTable(db, 'statements', data_db,
-                 append=TRUE , row.names = FALSE)
-  }
 }
-

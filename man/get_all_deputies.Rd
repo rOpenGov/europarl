@@ -4,7 +4,7 @@
 \alias{get_all_deputies}
 \title{Get data about all deputies}
 \usage{
-get_all_deputies()
+get_all_deputies(term = 1)
 }
 \description{
 Get data about all deputies

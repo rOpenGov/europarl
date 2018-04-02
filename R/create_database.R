@@ -62,9 +62,10 @@ create_database <- function(dbname, user, password, host) {
 
   dbSendQuery(database, '
               CREATE TABLE eu_party_code (
+              id_db INT AUTO_INCREMENT NOT NULL
               id VARCHAR(10) NOT NULL,
               full_name VARCHAR(88),
-              PRIMARY KEY (id))')
+              PRIMARY KEY (id_db))')
 
 
   # creating table with eu_party history of deputies

@@ -136,7 +136,7 @@ for (term in 7 ) {
   i <- term
   for(x in seq_along(deputies[[term]][,c('id')])) {
     start <- Sys.time()
-    x <- x + 512
+    x <- x + 695
     if (x == length(deputies[[term]]$id) + 1) {
       break
     }

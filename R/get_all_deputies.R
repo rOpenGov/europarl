@@ -4,9 +4,9 @@
 #' @import rvest
 #' @import magrittr
 #' @import RSelenium
-get_all_deputies <- function() {
+get_all_deputies <- function(term = 1) {
   # repeat: get current term of office and create data_frame with deputies names
-  i <- 1
+  i <- term
   list_deputies <- list()
   repeat ({
 

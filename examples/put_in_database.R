@@ -5,145 +5,6 @@ library(tidyverse)
 #========================
 
 
-
-db <- dbConnect(MySQL(),dbname = 'epdebate_dev',
-                user = 'epdebate',
-                password = rstudioapi::askForPassword(),
-                host = '10.1.93.2')
-dbSendQuery(db,"SET NAMES 'utf8';")
-summary(db)
-dbGetInfo(db)
-
-dbListTables(db)
-dbListFields(db, 'deputies')
-
- query <- dbSendQuery(db,"
-  DROP TABLE IF EXISTS deputies;
-  ")
-dbGetInfo(query)
-
-query <- dbSendQuery(db,'
-  CREATE TABLE deputies (
-  id VARCHAR(20) NOT NULL,
-  name VARCHAR(50),
-  link VARCHAR(200),
-  nationality VARCHAR(20),
-  date_of_birth DATE,
-  place_of_birth VARCHAR(50),
-  date_of_death DATE,
-  PRIMARY KEY (id))
-')
-
-dbWriteTable(db, 'deputies', deputies_P8,
-             append = TRUE, row.names = FALSE)
-
-
-query <- dbSendQuery(db,'
-  CREATE TABLE term_of_office (
-  deputies_id VARCHAR(20) NOT NULL,
-  term VARCHAR(3) NOT NULL,
-  PRIMARY KEY (deputies_id, term),
-  FOREIGN KEY (deputies_id) REFERENCES deputies(id)
-  )
-')
-dbWriteTable(db, 'term_of_office', term_of_office_P8,
-             append = TRUE, row.names = FALSE)
-
-
-dbSendQuery(db,"SET NAMES 'utf8';")
-
-q <- dbSendQuery(db,'
-                 SELECT name FROM deputies
-                  WHERE id = "124884";
-                 ')
-
-data <- fetch(q, n = -1)
-dbGetQuery(db,'
-                 SELECT name FROM deputies
-                  WHERE id = "124884";
-                 ')
-#=====================================
-
-
-
-statements_P8 <- read.table('./data/partial_results/1_124990.txt', sep='|', encoding ="UTF-8")
-statements_P8$text <- gsub('_eol','\n', statements_P8$text)
-direcotry <- './data/partial_results/'
-
-nazwy <- colnames(statements_P8)
-out <- vector()
-for(i in 2:832) {
-  cat(i,'\n')
-
-  tryCatch(tmp_data <- read.table(paste(direcotry,i,'_', deputies_P8$id[i],'.txt', sep=''),
-                                  encoding ="UTF-8", sep='|', quote = "\"" ),
-           error = function(e){
-             tryCatch(tmp_data <- read.table(paste(direcotry,i,'_', deputies_P8$id[i],'.txt', sep=''),
-                                             encoding ="UTF-8", sep='|', quote = "" ),
-                      error = function(e){
-                        tmp_data <- read.table(paste(direcotry,i,'_', deputies_P8$id[i],'.txt', sep=''),
-                                               sep='|', quote = "\n" , encoding ="UTF-8",
-                                               comment.char="", allowEscapes=T)
-                      })
-           })
-
-
-  if(length(colnames(tmp_data)) != 1) {
-
-
-
-    for(colname in names(tmp_data)){
-      tmp_data[[colname]] <- gsub('\"',"", tmp_data[[colname]])
-    }
-
-    tmp_data[,7] <- gsub('_eol','\n', tmp_data[,7])
-
-    colnames(tmp_data) <- nazwy
-
-    statements_P8 <- rbind(statements_P8, tmp_data)
-  }
-  else {
-    out <- c(i, out)
-    cat('out:',i,'\n')
-  }
-}
-
-
-save(statements_P8, deputies_P8, file="./data/deputies_P8_statements.rda")
-
-
-#=====================================
-
-tmp <- NA
-
-in_writing <- read.delim(file="./materials/in_writing_dictionary.txt", encoding ="UTF-8", sep=";")
-h <- paste(in_writing$name, collapse="|")
-tmp <- statements_P8[,c('text', 'id_deputy')]
-
-
-tmp$text <- sapply(tmp$text, function(x) {
-    sub("[–|‒]\\s.*", "", x)
- })
-
-tmp$in_writing <- grepl(h,tmp$text)
-
-president <- read.delim(file="./materials/president.txt", encoding ="UTF-8", sep=";")
-h <- paste(in_writing$name, collapse="|")
-tmp$president <- grepl(h,tmp$text)
-
-
-#=======================================
-frakcje <- read_csv2("./materials/frakcje.csv")
-colnames(frakcje) <- c("eugroup", "short")
-
-max_name <- 0
-for(i in seq_along(eu_party_temp$name)) {
-  n <- nchar(as.character(eu_party_temp$name[i]))
-  max_name <- max(n, max_name)
-  if(max_name == n)
-    save <- i
-}
-
 #=================
 create_database(dbname = 'epdebate_dev',
                  user = 'epdebate',
@@ -159,13 +20,14 @@ db <- dbConnect(MySQL(),dbname = 'epdebate_dev',
 
 dbSendQuery(db,"SET NAMES 'utf8';")
 
- dbGetQuery(db,'
+dbGetQuery(db,'
                  SELECT name FROM deputies
                   WHERE id = "124884";
                  ')
 
-
 dbGetQuery(db, 'SELECT * FROM languages;')
+
+dbSendQuery(db,"SET NAMES 'utf8';")
 
 #dbDisconnect(db)
 summary(db)
