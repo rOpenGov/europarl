@@ -5,3 +5,5 @@
 r_check button.R
 errors.R
 profiler/
+db_config.txt
+data/partial_results/
