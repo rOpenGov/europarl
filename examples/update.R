@@ -8,20 +8,6 @@ library(europarl)
 library(data.table)
 library(glue)
 library(lubridate)
-# functions
-read_config <- function(name = 'db_config.txt', delim = " ") {
-
-  config <- read_delim(paste0('./', name), delim = delim,
-                       col_names = FALSE)
-
-  config <- config[,-2]
-  colnames(config) <- c('name', 'value')
-  return(config)
-}
-
-
-
-
 
 # code
 # connect to database

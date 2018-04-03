@@ -63,8 +63,8 @@ statements_update_statements <- function(deputy_id, browser, term_of_office = 8,
         link = data$link,
         term = 8
       )
-      # dbWriteTable(db, 'statements', data_db,
-      #              append = TRUE , row.names = FALSE)
+      dbWriteTable(db, 'statements', data_db,
+                    append = TRUE , row.names = FALSE)
 
   }
   return(invisible(NULL))
