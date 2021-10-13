@@ -1,8 +1,8 @@
 Type: Package
 Package: europarl
-Title: Scrap data from europarlament's website
+Title: Scrap Data from Europarlament's Website
 Version: 0.1.0
-Author: First version - Szymon Gorka
+Author: Szymon Gorka
 Maintainer: The package maintainer <yourself@somewhere.net>
 Description: Scrap data from europarlament's website.
 License: GPL

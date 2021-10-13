@@ -27,8 +27,9 @@ File should contains:
 }
 }
 \examples{
-read_config()
 \dontrun{
+read_config()
+
 read_config(file = "path/name.txt", delim = " ")
 }
 }

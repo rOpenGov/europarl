@@ -14,8 +14,9 @@
 #' @return A tibble with dbname, host, username and password for database conncetion.
 #'
 #' @examples
-#' read_config()
 #' \dontrun{
+#' read_config()
+#'
 #' read_config(file = "path/name.txt", delim = " ")
 #' }
 #' @export
@@ -28,7 +29,9 @@
 
 
 
-read_config <- function(file = system.file("config/db_config.txt", package = "europarl"),
+read_config <- function(file = system.file("config/db_config.txt",
+                          package = "europarl"
+                        ),
                         delim = " ") {
   config <- read_delim(file,
     delim = delim,
