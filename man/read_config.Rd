@@ -4,7 +4,10 @@
 \alias{read_config}
 \title{Loads data from configuration file}
 \usage{
-read_config(file = "db_config.txt", delim = " ")
+read_config(
+  file = system.file("config/db_config.txt", package = "europarl"),
+  delim = " "
+)
 }
 \arguments{
 \item{delim}{a delim parametr in read_delim}
@@ -25,6 +28,7 @@ File should contains:
 }
 \examples{
 read_config()
+\dontrun{
 read_config(file = "path/name.txt", delim = " ")
-
+}
 }
