@@ -1,15 +1,29 @@
-Package: europarl
 Type: Package
-Title:  Scrap data from europarlament's website
+Package: europarl
+Title: Scrap Data from Europarlament's Website
 Version: 0.1.0
-Author: First version - Szymon Gorka
+Author: Szymon Gorka
 Maintainer: The package maintainer <yourself@somewhere.net>
-Description: Scrap data from europarlament's website
+Description: Scrap data from europarlament's website.
 License: GPL
+URL: https://ropengov.github.io/europarl/,
+    https://github.com/rOpenGov/europarl
+BugReports: https://github.com/rOpenGov/europarl/issues
+Imports: 
+    DBI,
+    dplyr,
+    lubridate,
+    magrittr,
+    readr,
+    RMySQL,
+    RSelenium,
+    rvest,
+    stringr,
+    tidyverse,
+    XML,
+    xml2
 Encoding: UTF-8
 LazyData: true
-Imports: rvest,
-    dplyr,
-    magrittr,
-    RSelenium
-RoxygenNote: 6.0.1
+RoxygenNote: 7.1.2
+X-schema.org-isPartOf: http://ropengov.org/
+X-schema.org-keywords: ropengov
