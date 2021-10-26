@@ -1,8 +1,8 @@
 pandoc: 2.7.3
 pkgdown: 1.9000.9000.9000
-pkgdown_sha: 0bdae151df6e15132d5805526da308e3eaf487cd
+pkgdown_sha: 8e6bd42603f7d913a8b5ff703c77a522160804a7
 articles: {}
-last_built: 2021-10-13T21:51Z
+last_built: 2021-10-26T16:13Z
 urls:
   reference: https://ropengov.github.io/europarl/reference
   article: https://ropengov.github.io/europarl/articles
